@@ -7,13 +7,14 @@ import {
   TrendingUp,
   Award,
   Zap,
+  Sparkles,
 } from 'lucide-react';
 import {
   formatFriendlyDate,
   getTodayDateStr,
   formatShortDate,
 } from '../utils/dateUtils';
-import { getMotivationalMessage } from '../utils/constants';
+import { getMotivationalMessage, STARTER_HABIT_TEMPLATES } from '../utils/constants';
 import { getLast7DaysStats } from '../utils/streakUtils';
 import HabitChecklist from './HabitChecklist';
 
@@ -28,16 +29,23 @@ export default function Dashboard({
   onToggleHabit,
   onEditHabit,
   onOpenCreateModal,
+  onAddStarterHabit,
 }) {
   const todayStr = getTodayDateStr();
   const activeHabits = habits.filter((h) => !h.archived);
 
   // Motivational message
-  const motivation = getMotivationalMessage(
-    todayStats.percentage,
-    todayStats.completed,
-    todayStats.total
-  );
+  const motivation = activeHabits.length === 0
+    ? {
+        title: 'Welcome to your private Habit Tracker!',
+        message: 'Start tracking your daily goals. Add your own custom habit or pick a starter below.',
+        type: 'initial',
+      }
+    : getMotivationalMessage(
+        todayStats.percentage,
+        todayStats.completed,
+        todayStats.total
+      );
 
   // 7-day stats for week strip
   const weekStats = getLast7DaysStats(habits, logs);
@@ -175,29 +183,97 @@ export default function Dashboard({
         </div>
       </div>
 
-      {/* Immediate Daily Progress Bar Section */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-xs">
-        <div className="flex items-center justify-between mb-2">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-slate-900 dark:text-white">
-              Today's Daily Target
+      {/* If no habits exist yet, show a welcoming starter section */}
+      {activeHabits.length === 0 ? (
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-6 shadow-xs">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-100 dark:border-slate-800">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="p-2 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400">
+                  <Sparkles className="w-5 h-5" />
+                </span>
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white">
+                  Welcome to Your Habit Tracker
+                </h3>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
+                Your habits and targets are private to your device. Pick a starter habit or create a custom routine.
+              </p>
+            </div>
+
+            <button
+              onClick={onOpenCreateModal}
+              className="px-4 py-2.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 active:bg-emerald-600 text-slate-950 font-bold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
+            >
+              <Plus className="w-4 h-4 stroke-[3]" />
+              Create Custom Habit
+            </button>
+          </div>
+
+          <div className="mt-5">
+            <span className="text-xs font-bold text-slate-400 uppercase tracking-wider block mb-3">
+              Starter Suggestions (1-Click Add)
             </span>
-            <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
-              {todayStats.completed} / {todayStats.total} Completed
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {STARTER_HABIT_TEMPLATES.map((tpl) => (
+                <div
+                  key={tpl.name}
+                  className="p-4 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/40 hover:border-slate-300 dark:hover:border-slate-700 transition-all flex flex-col justify-between gap-3"
+                >
+                  <div className="flex items-start gap-3">
+                    <span
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-xl shrink-0 text-white shadow-xs"
+                      style={{ backgroundColor: tpl.color }}
+                    >
+                      {tpl.emoji}
+                    </span>
+                    <div className="min-w-0">
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                        {tpl.name}
+                      </h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-0.5">
+                        {tpl.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <button
+                    onClick={() => onAddStarterHabit && onAddStarterHabit(tpl)}
+                    className="w-full py-2 px-3 rounded-lg bg-white dark:bg-slate-700 hover:bg-emerald-50 dark:hover:bg-emerald-950/40 text-slate-800 dark:text-slate-200 hover:text-emerald-600 dark:hover:text-emerald-400 text-xs font-semibold border border-slate-200 dark:border-slate-600 hover:border-emerald-300 dark:hover:border-emerald-700 transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-xs"
+                  >
+                    <Plus className="w-3.5 h-3.5 stroke-[3]" />
+                    Add Habit
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* Immediate Daily Progress Bar Section */
+        <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 p-5 shadow-xs">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-bold text-slate-900 dark:text-white">
+                Today's Daily Target
+              </span>
+              <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-emerald-50 dark:bg-emerald-950/50 text-emerald-700 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+                {todayStats.completed} / {todayStats.total} Completed
+              </span>
+            </div>
+            <span className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">
+              {todayStats.percentage}%
             </span>
           </div>
-          <span className="text-sm font-extrabold text-emerald-600 dark:text-emerald-400">
-            {todayStats.percentage}%
-          </span>
-        </div>
 
-        <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-0.5">
-          <div
-            className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500 ease-out shadow-xs"
-            style={{ width: `${todayStats.percentage}%` }}
-          />
+          <div className="w-full h-3 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden p-0.5">
+            <div
+              className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500 ease-out shadow-xs"
+              style={{ width: `${todayStats.percentage}%` }}
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Prominent Daily Habit Check-in Section */}
       <HabitChecklist

@@ -38,6 +38,7 @@ export default function App() {
     closeToast,
     toggleHabitCompletion,
     createHabit,
+    addStarterHabit,
     updateHabit,
     deleteHabit,
     toggleArchiveHabit,
@@ -125,6 +126,7 @@ export default function App() {
               onToggleHabit={toggleHabitCompletion}
               onEditHabit={handleOpenEditModal}
               onOpenCreateModal={handleOpenCreateModal}
+              onAddStarterHabit={addStarterHabit}
             />
           )}
 

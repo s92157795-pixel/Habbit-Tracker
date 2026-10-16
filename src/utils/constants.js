@@ -26,73 +26,51 @@ export const SCHEDULE_TYPES = {
   CUSTOM: 'custom',
 };
 
-export const INITIAL_SAMPLE_HABITS = [
+export const STARTER_HABIT_TEMPLATES = [
   {
-    id: 'habit-1-coding',
-    name: 'Coding Practice',
-    emoji: '💻',
-    description: 'Solve 1 algorithmic problem or build project features',
-    color: '#6366f1', // Indigo
-    colorName: 'indigo',
-    scheduleType: 'daily',
-    scheduledDays: [0, 1, 2, 3, 4, 5, 6], // Everyday
-    reminderTime: '09:00',
-    createdAt: '2026-10-01',
-    archived: false,
-  },
-  {
-    id: 'habit-2-study',
-    name: 'Study',
-    emoji: '📚',
-    description: 'Review coursework, articles, or technical documentation',
-    color: '#0284c7', // Sky Blue
+    name: 'Drink 2L Water',
+    emoji: '💧',
+    description: 'Stay hydrated with at least 8 glasses of water daily',
+    color: '#0284c7',
     colorName: 'blue',
-    scheduleType: 'custom',
-    scheduledDays: [1, 2, 3, 4, 5], // Mon-Fri
-    reminderTime: '14:00',
-    createdAt: '2026-10-01',
-    archived: false,
+    scheduleType: 'daily',
+    scheduledDays: [0, 1, 2, 3, 4, 5, 6],
+    reminderTime: '10:00',
   },
   {
-    id: 'habit-3-reading',
-    name: 'Read 10 Pages',
+    name: 'Daily Exercise',
+    emoji: '🏃',
+    description: '30 minutes workout, brisk walk, jogging or stretching',
+    color: '#10b981',
+    colorName: 'emerald',
+    scheduleType: 'daily',
+    scheduledDays: [0, 1, 2, 3, 4, 5, 6],
+    reminderTime: '07:30',
+  },
+  {
+    name: 'Read 15 Pages',
     emoji: '📖',
-    description: 'Non-fiction book or insightful literature',
-    color: '#f59e0b', // Amber
+    description: 'Read an insightful book, article, or documentation',
+    color: '#f59e0b',
     colorName: 'amber',
     scheduleType: 'daily',
-    scheduledDays: [0, 1, 2, 3, 4, 5, 6], // Everyday
+    scheduledDays: [0, 1, 2, 3, 4, 5, 6],
     reminderTime: '21:30',
-    createdAt: '2026-10-01',
-    archived: false,
   },
   {
-    id: 'habit-4-exercise',
-    name: 'Exercise',
-    emoji: '🏃',
-    description: 'Gym workout, running, stretching, or brisk walk',
-    color: '#10b981', // Emerald
-    colorName: 'emerald',
-    scheduleType: 'custom',
-    scheduledDays: [1, 3, 5, 6], // Mon, Wed, Fri, Sat
-    reminderTime: '07:30',
-    createdAt: '2026-10-01',
-    archived: false,
-  },
-  {
-    id: 'habit-5-video',
-    name: 'Upload Video',
-    emoji: '🎬',
-    description: 'Edit, polish, and publish weekly video content',
-    color: '#f43f5e', // Rose
-    colorName: 'rose',
-    scheduleType: 'custom',
-    scheduledDays: [2, 4, 0], // Tue, Thu, Sun
-    reminderTime: '17:00',
-    createdAt: '2026-10-01',
-    archived: false,
+    name: 'Meditation & Focus',
+    emoji: '🧘',
+    description: '10 minutes of mindfulness, breathing, or quiet reflection',
+    color: '#8b5cf6',
+    colorName: 'violet',
+    scheduleType: 'daily',
+    scheduledDays: [0, 1, 2, 3, 4, 5, 6],
+    reminderTime: '08:00',
   },
 ];
+
+// Initial habits default to empty so new visitors/devices start with their own clean interface
+export const INITIAL_SAMPLE_HABITS = [];
 
 /**
  * Motivational encouraging messages based on daily progress percentage

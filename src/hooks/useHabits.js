@@ -206,13 +206,35 @@ export function useHabits() {
     [showToast]
   );
 
-  // Reset all data
+  // Add a starter habit template with one click
+  const addStarterHabit = useCallback(
+    (template) => {
+      const newHabit = {
+        id: `habit-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+        name: template.name.trim(),
+        emoji: template.emoji || '🎯',
+        description: template.description?.trim() || '',
+        color: template.color || '#10b981',
+        colorName: template.colorName || 'emerald',
+        scheduleType: template.scheduleType || 'daily',
+        scheduledDays: template.scheduledDays || [0, 1, 2, 3, 4, 5, 6],
+        reminderTime: template.reminderTime || '',
+        createdAt: getTodayDateStr(),
+        archived: false,
+      };
+
+      setHabits((prev) => [newHabit, ...prev]);
+      showToast(`Added habit "${newHabit.name}"! 🎯`, 'success');
+    },
+    [showToast]
+  );
+
+  // Reset all data to clean slate
   const resetData = useCallback(() => {
     resetAllStorage();
-    setHabits(INITIAL_SAMPLE_HABITS);
-    const sampleLogs = loadStoredLogs(INITIAL_SAMPLE_HABITS);
-    setLogs(sampleLogs);
-    showToast('Reset habit data to initial defaults', 'info');
+    setHabits([]);
+    setLogs({});
+    showToast('Reset all habit data to clean initial state', 'info');
   }, [showToast]);
 
   // Check background habit reminder times every minute
@@ -303,6 +325,7 @@ export function useHabits() {
     closeToast,
     toggleHabitCompletion,
     createHabit,
+    addStarterHabit,
     updateHabit,
     deleteHabit,
     toggleArchiveHabit,

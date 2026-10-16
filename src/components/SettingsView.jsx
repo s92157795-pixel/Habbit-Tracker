@@ -261,7 +261,7 @@ export default function SettingsView({
           Reset All Habit Data
         </h3>
         <p className="text-xs text-slate-500 dark:text-slate-400 mb-4">
-          Wipes local checkmarks and resets habits to the clean initial starter setup.
+          Wipes all local habits, completion logs, and streaks to start completely fresh.
         </p>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-xl bg-rose-50/50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/50">
@@ -298,7 +298,7 @@ export default function SettingsView({
       <ConfirmModal
         isOpen={isResetModalOpen}
         title="Reset All Habit Data"
-        message="Are you sure you want to reset all habits and checkmarks? This will return the application to its initial sample state."
+        message="Are you sure you want to reset all habits and checkmarks? This will clear all data and return the application to a clean slate."
         confirmText="Yes, Reset Everything"
         cancelText="Cancel"
         isDanger={true}

@@ -59,24 +59,23 @@ function generateInitialSampleLogs(habits) {
 }
 
 /**
- * Safely load habits from localStorage
+ * Safely load habits from localStorage.
+ * For new visitors / devices, defaults to a clean empty array [] so they see their own fresh dashboard.
  */
 export function loadStoredHabits() {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.HABITS);
     if (!raw) {
-      // First launch: initialize with sample habits
-      saveStoredHabits(INITIAL_SAMPLE_HABITS);
-      return INITIAL_SAMPLE_HABITS;
+      return [];
     }
     const parsed = JSON.parse(raw);
-    if (Array.isArray(parsed) && parsed.length > 0) {
+    if (Array.isArray(parsed)) {
       return parsed;
     }
-    return INITIAL_SAMPLE_HABITS;
+    return [];
   } catch (err) {
     console.error('Failed to parse habits from localStorage:', err);
-    return INITIAL_SAMPLE_HABITS;
+    return [];
   }
 }
 
@@ -85,29 +84,25 @@ export function loadStoredHabits() {
  */
 export function saveStoredHabits(habits) {
   try {
-    localStorage.setItem(STORAGE_KEYS.HABITS, JSON.stringify(habits));
+    localStorage.setItem(STORAGE_KEYS.HABITS, JSON.stringify(habits || []));
   } catch (err) {
     console.error('Failed to save habits to localStorage:', err);
   }
 }
 
 /**
- * Safely load logs from localStorage
+ * Safely load logs from localStorage.
+ * For new visitors / devices, defaults to an empty object {} so no foreign streaks or targets appear.
  */
-export function loadStoredLogs(habits) {
+export function loadStoredLogs() {
   try {
-    const isInit = localStorage.getItem(STORAGE_KEYS.FIRST_LAUNCH);
     const raw = localStorage.getItem(STORAGE_KEYS.LOGS);
-
-    if (!isInit || !raw) {
-      const initialLogs = generateInitialSampleLogs(habits || INITIAL_SAMPLE_HABITS);
-      saveStoredLogs(initialLogs);
-      localStorage.setItem(STORAGE_KEYS.FIRST_LAUNCH, 'true');
-      return initialLogs;
+    if (!raw) {
+      return {};
     }
 
     const parsed = JSON.parse(raw);
-    return typeof parsed === 'object' && parsed !== null ? parsed : {};
+    return typeof parsed === 'object' && parsed !== null && !Array.isArray(parsed) ? parsed : {};
   } catch (err) {
     console.error('Failed to parse logs from localStorage:', err);
     return {};

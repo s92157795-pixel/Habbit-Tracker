@@ -246,72 +246,86 @@ export default function StatsView({ habits, logs, habitStreaks, bestStreak }) {
           </div>
         </div>
 
-        <div className="mt-4 divide-y divide-slate-100 dark:divide-slate-800">
-          {rankedHabits.map((habit, index) => {
-            const streak = habitStreaks[habit.id] || {
-              currentStreak: 0,
-              longestStreak: 0,
-              totalCompleted: 0,
-            };
+        {rankedHabits.length === 0 ? (
+          <div className="py-12 text-center">
+            <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-3 text-slate-400">
+              <Award className="w-6 h-6" />
+            </div>
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+              No habit streaks tracked yet
+            </p>
+            <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+              Add your personal habits to calculate active streaks, completion records, and performance milestones.
+            </p>
+          </div>
+        ) : (
+          <div className="mt-4 divide-y divide-slate-100 dark:divide-slate-800">
+            {rankedHabits.map((habit, index) => {
+              const streak = habitStreaks[habit.id] || {
+                currentStreak: 0,
+                longestStreak: 0,
+                totalCompleted: 0,
+              };
 
-            return (
-              <div
-                key={habit.id}
-                className="py-3.5 flex items-center justify-between gap-4"
-              >
-                <div className="flex items-center gap-3.5 min-w-0">
-                  <span className="w-6 text-xs font-bold text-slate-400 text-center shrink-0">
-                    #{index + 1}
-                  </span>
-                  <div
-                    className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 text-white shadow-xs"
-                    style={{ backgroundColor: habit.color || '#10b981' }}
-                  >
-                    {habit.emoji || '🎯'}
+              return (
+                <div
+                  key={habit.id}
+                  className="py-3.5 flex items-center justify-between gap-4"
+                >
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <span className="w-6 text-xs font-bold text-slate-400 text-center shrink-0">
+                      #{index + 1}
+                    </span>
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center text-lg shrink-0 text-white shadow-xs"
+                      style={{ backgroundColor: habit.color || '#10b981' }}
+                    >
+                      {habit.emoji || '🎯'}
+                    </div>
+                    <div className="min-w-0">
+                      <h4 className="text-sm font-bold text-slate-900 dark:text-white truncate">
+                        {habit.name}
+                      </h4>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
+                        {habit.description || 'No description'}
+                      </p>
+                    </div>
                   </div>
-                  <div className="min-w-0">
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-white truncate">
-                      {habit.name}
-                    </h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 truncate">
-                      {habit.description || 'No description'}
-                    </p>
+
+                  <div className="flex items-center gap-6 shrink-0 text-right">
+                    <div>
+                      <span className="text-[10px] text-slate-400 uppercase font-semibold block">
+                        Current Streak
+                      </span>
+                      <span className="text-sm font-bold text-amber-600 dark:text-amber-400 flex items-center justify-end gap-1">
+                        <Flame className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                        {streak.currentStreak} days
+                      </span>
+                    </div>
+
+                    <div className="hidden sm:block">
+                      <span className="text-[10px] text-slate-400 uppercase font-semibold block">
+                        Longest Streak
+                      </span>
+                      <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
+                        {streak.longestStreak} days
+                      </span>
+                    </div>
+
+                    <div>
+                      <span className="text-[10px] text-slate-400 uppercase font-semibold block">
+                        Total Done
+                      </span>
+                      <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
+                        {streak.totalCompleted}
+                      </span>
+                    </div>
                   </div>
                 </div>
-
-                <div className="flex items-center gap-6 shrink-0 text-right">
-                  <div>
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold block">
-                      Current Streak
-                    </span>
-                    <span className="text-sm font-bold text-amber-600 dark:text-amber-400 flex items-center justify-end gap-1">
-                      <Flame className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                      {streak.currentStreak} days
-                    </span>
-                  </div>
-
-                  <div className="hidden sm:block">
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold block">
-                      Longest Streak
-                    </span>
-                    <span className="text-sm font-bold text-slate-700 dark:text-slate-300">
-                      {streak.longestStreak} days
-                    </span>
-                  </div>
-
-                  <div>
-                    <span className="text-[10px] text-slate-400 uppercase font-semibold block">
-                      Total Done
-                    </span>
-                    <span className="text-sm font-bold text-emerald-600 dark:text-emerald-400">
-                      {streak.totalCompleted}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </div>
   );

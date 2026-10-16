@@ -194,7 +194,25 @@ export default function HabitChecklist({
 
       {/* Habit Items List */}
       <div className="space-y-2.5">
-        {filteredHabits.length === 0 ? (
+        {activeHabits.length === 0 ? (
+          <div className="py-12 text-center">
+            <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-3 text-slate-400">
+              <CheckCircle2 className="w-6 h-6" />
+            </div>
+            <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+              No habits created yet
+            </p>
+            <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto">
+              Create your first habit or pick a starter template to start checking off daily routines.
+            </p>
+            <button
+              onClick={onOpenCreateModal}
+              className="mt-4 px-4 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold text-xs shadow-xs transition-all inline-flex items-center gap-1.5 cursor-pointer"
+            >
+              + Create Habit
+            </button>
+          </div>
+        ) : filteredHabits.length === 0 ? (
           <div className="py-12 text-center">
             <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center mx-auto mb-3 text-slate-400">
               <CheckCircle2 className="w-6 h-6" />
@@ -204,12 +222,12 @@ export default function HabitChecklist({
                 ? 'No habits completed yet for this date'
                 : filter === 'pending'
                 ? 'All scheduled habits for this date are completed! 🎉'
-                : 'No habits found'}
+                : 'No habits scheduled for this day'}
             </p>
             <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto">
               {filter === 'pending'
                 ? 'Great job keeping up with your goals!'
-                : 'Check off a habit or create a new one to get started.'}
+                : 'Check off a habit or select another date on your calendar.'}
             </p>
           </div>
         ) : (
