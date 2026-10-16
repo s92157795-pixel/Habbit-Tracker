@@ -9,6 +9,7 @@ import {
   Sun,
   HardDrive,
   AlertTriangle,
+  Smartphone,
 } from 'lucide-react';
 import {
   isNotificationSupported,
@@ -21,6 +22,7 @@ import ConfirmModal from './ConfirmModal';
 export default function SettingsView({
   theme,
   onToggleTheme,
+  onOpenInstallModal,
   onExportData,
   onImportData,
   onResetData,
@@ -90,6 +92,34 @@ export default function SettingsView({
               Manage backups, imports, theme preferences, and local storage
             </p>
           </div>
+        </div>
+      </div>
+
+      {/* 0. Mobile App & Phone Installation */}
+      <div className="bg-gradient-to-r from-emerald-600 to-teal-700 rounded-2xl p-6 text-white shadow-md">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3.5">
+            <div className="p-3 rounded-xl bg-white/20 text-white shrink-0 backdrop-blur-xs">
+              <Smartphone className="w-6 h-6" />
+            </div>
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-white/20 text-[11px] font-extrabold uppercase tracking-wider mb-1">
+                Install as Mobile App
+              </div>
+              <h3 className="text-lg font-bold">Use HabitFlow on Your Phone</h3>
+              <p className="text-xs text-emerald-100 mt-0.5 leading-relaxed max-w-lg">
+                Install this app on Android, iPhone, or Desktop to run fullscreen, offline, and right from your home screen.
+              </p>
+            </div>
+          </div>
+
+          <button
+            onClick={onOpenInstallModal}
+            className="px-5 py-3 rounded-xl bg-white text-emerald-800 hover:bg-emerald-50 active:bg-emerald-100 font-extrabold text-xs shadow-md transition-all cursor-pointer shrink-0 self-start sm:self-auto flex items-center gap-2"
+          >
+            <Download className="w-4 h-4" />
+            Install / Download App
+          </button>
         </div>
       </div>
 

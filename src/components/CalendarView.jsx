@@ -133,7 +133,7 @@ export default function CalendarView({
           </div>
 
           {/* Day Cells Grid */}
-          <div className="grid grid-cols-7 gap-1.5 sm:gap-2">
+          <div className="grid grid-cols-7 gap-1 sm:gap-2">
             {calendarCells.map((cell) => {
               const stats = getDailyStats(cell.dateStr, habits, logs);
               const isSelected = selectedDate === cell.dateStr;
@@ -149,7 +149,7 @@ export default function CalendarView({
                   key={cell.dateStr}
                   type="button"
                   onClick={() => onSelectDate(cell.dateStr)}
-                  className={`relative min-h-[72px] sm:min-h-[88px] p-2 rounded-xl flex flex-col justify-between transition-all text-left cursor-pointer border ${
+                  className={`relative min-h-[58px] sm:min-h-[76px] md:min-h-[88px] p-1 sm:p-2 rounded-lg sm:rounded-xl flex flex-col justify-between transition-all text-left cursor-pointer border ${
                     isSelected
                       ? 'border-emerald-500 ring-2 ring-emerald-500/20 bg-emerald-50/20 dark:bg-emerald-950/20 shadow-sm z-10'
                       : isTodayCell
@@ -162,7 +162,7 @@ export default function CalendarView({
                   {/* Top: Day number + Today indicator */}
                   <div className="flex items-center justify-between w-full">
                     <span
-                      className={`text-xs sm:text-sm font-semibold rounded-md px-1.5 py-0.5 ${
+                      className={`text-[11px] sm:text-xs md:text-sm font-semibold rounded-md px-1 sm:px-1.5 py-0.5 ${
                         isTodayCell
                           ? 'bg-emerald-600 text-white font-bold'
                           : cell.isCurrentMonth
@@ -175,22 +175,22 @@ export default function CalendarView({
 
                     {/* Checkmark icon for complete days */}
                     {isCompleted && !isFutureCell && (
-                      <span className="w-5 h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-xs">
-                        <Check className="w-3 h-3 stroke-[3]" />
+                      <span className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-emerald-500 text-white flex items-center justify-center shrink-0 shadow-xs">
+                        <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 stroke-[3]" />
                       </span>
                     )}
 
                     {isPartial && !isFutureCell && (
-                      <span className="w-2.5 h-2.5 rounded-full bg-amber-400 dark:bg-amber-500 shrink-0" />
+                      <span className="w-2 h-2 sm:w-2.5 sm:h-2.5 rounded-full bg-amber-400 dark:bg-amber-500 shrink-0" />
                     )}
                   </div>
 
                   {/* Bottom: Progress info */}
-                  <div className="w-full mt-1">
+                  <div className="w-full mt-0.5 sm:mt-1">
                     {stats.total > 0 && !isFutureCell ? (
                       <div>
                         {/* Mini Progress Bar */}
-                        <div className="w-full h-1 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden mb-1">
+                        <div className="w-full h-1 bg-slate-100 dark:bg-slate-700 rounded-full overflow-hidden mb-0.5 sm:mb-1">
                           <div
                             className={`h-full rounded-full transition-all ${
                               isCompleted
@@ -204,7 +204,7 @@ export default function CalendarView({
                         </div>
 
                         {/* Fraction Indicator */}
-                        <div className="flex items-center justify-between text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                        <div className="flex items-center justify-between text-[9px] sm:text-[10px] text-slate-500 dark:text-slate-400 font-medium leading-none">
                           <span>
                             {stats.completed}/{stats.total}
                           </span>
@@ -214,12 +214,12 @@ export default function CalendarView({
                         </div>
                       </div>
                     ) : stats.total > 0 && isFutureCell ? (
-                      <div className="text-[10px] text-slate-400 dark:text-slate-500">
-                        {stats.total} scheduled
+                      <div className="text-[9px] sm:text-[10px] text-slate-400 dark:text-slate-500 truncate">
+                        {stats.total} set
                       </div>
                     ) : (
-                      <div className="text-[10px] text-slate-400/60 dark:text-slate-600">
-                        Rest
+                      <div className="text-[9px] sm:text-[10px] text-slate-400/60 dark:text-slate-600">
+                        -
                       </div>
                     )}
                   </div>
@@ -256,21 +256,24 @@ export default function CalendarView({
       </div>
 
       {/* Yearly Activity Heatmap (Contribution Calendar) */}
-      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-6 transition-all">
-        <div className="flex items-center justify-between pb-4 border-b border-slate-100 dark:border-slate-800">
+      <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm p-4 sm:p-6 transition-all">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-4 border-b border-slate-100 dark:border-slate-800">
           <div>
             <h3 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
               <Sparkles className="w-4 h-4 text-emerald-500" />
               Yearly Activity Heatmap
             </h3>
             <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
-              52-week consistency matrix. Click any square to navigate to that day.
+              52-week consistency matrix. Click any square to jump to that day.
             </p>
           </div>
+          <span className="text-[10px] text-slate-400 sm:hidden">
+            Swipe sideways to view full year →
+          </span>
         </div>
 
-        {/* Heatmap Grid Container */}
-        <div className="mt-4 overflow-x-auto pb-2 relative">
+        {/* Heatmap Grid Container with smooth touch scrolling */}
+        <div className="mt-4 overflow-x-auto pb-3 pt-1 touch-pan-x">
           <div className="inline-grid grid-rows-7 grid-flow-col gap-1">
             {heatmapDays.map((day) => {
               const stats = getDailyStats(day.dateStr, habits, logs);

@@ -9,6 +9,7 @@ import {
   Plus,
   Sun,
   Moon,
+  Smartphone,
   X,
 } from 'lucide-react';
 
@@ -18,6 +19,7 @@ export default function Sidebar({
   todayStats,
   bestStreak,
   onOpenCreateModal,
+  onOpenInstallModal,
   theme,
   onToggleTheme,
   isOpen,
@@ -146,6 +148,23 @@ export default function Sidebar({
               <span>{todayStats.percentage}%</span>
             </div>
           </div>
+
+          {/* Install Mobile App CTA */}
+          <button
+            onClick={() => {
+              onOpenInstallModal();
+              if (isOpen) onCloseMobile();
+            }}
+            className="w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-bold text-emerald-700 dark:text-emerald-300 bg-emerald-50 dark:bg-emerald-950/60 hover:bg-emerald-100 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 transition-all cursor-pointer shadow-xs"
+          >
+            <span className="flex items-center gap-2">
+              <Smartphone className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+              Install on Phone
+            </span>
+            <span className="text-[10px] uppercase tracking-wider bg-emerald-600 text-white px-2 py-0.5 rounded-full font-bold">
+              PWA
+            </span>
+          </button>
 
           {/* Theme switcher */}
           <button
